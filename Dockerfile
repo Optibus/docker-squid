@@ -1,5 +1,4 @@
-FROM sameersbn/ubuntu:14.04.20150825
-MAINTAINER sameer@damagehead.com
+FROM ubuntu:14.04
 
 ENV SQUID_VERSION=3.3.8 \
     SQUID_CACHE_DIR=/var/spool/squid3 \
@@ -13,10 +12,18 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 80F70E11F0F0D5F
  && mv /etc/squid3/squid.conf /etc/squid3/squid.conf.dist \
  && rm -rf /var/lib/apt/lists/*
 
+RUN     apt-get update && apt-get install -y apt-cacher-ng supervisor
 COPY squid.conf /etc/squid3/squid.conf
-COPY entrypoint.sh /sbin/entrypoint.sh
-RUN chmod 755 /sbin/entrypoint.sh
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN mkdir /optibus
+COPY *.sh /optibus/
+RUN chmod 755 /optibus/*.sh
 
 EXPOSE 3128/tcp
 VOLUME ["${SQUID_CACHE_DIR}"]
-ENTRYPOINT ["/sbin/entrypoint.sh"]
+
+VOLUME      ["/var/cache/apt-cacher-ng"]
+
+EXPOSE      3142
+
+CMD /usr/bin/supervisord -n
