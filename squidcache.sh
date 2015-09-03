@@ -24,6 +24,6 @@ if [[ "$OS" == "Darwin" ]]; then
         PROXY_IP=$(boot2docker ip)
     fi
 else
-    PROXY_IP=localhost
+    PROXY_IP=$(echo `ifconfig eth0 2>/dev/null|awk '/inet addr:/ {print $2}'|sed 's/addr://'`)
 fi
 echo "$PROXY_IP"
