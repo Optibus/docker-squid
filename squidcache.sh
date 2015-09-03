@@ -12,7 +12,7 @@ if ! docker ps | grep squidcache > /dev/null 2>&1 ; then
     if docker inspect squidcache > /dev/null 2>&1 ; then
         docker rm squidcache > /dev/null
     fi
-    docker run -d --net host -v /root/aptcacherng:/var/cache/apt-cacher-ng -v /root/squidcache:/var/spool/squid3 --name squidcache d.optibus/squidcache >/dev/null
+    docker run -d --net host -v /roor/devpi:/root/.devpi/server -v /root/aptcacherng:/var/cache/apt-cacher-ng -v /root/squidcache:/var/spool/squid3 --name squidcache d.optibus/squidcache >/dev/null
 fi
 
 OS=$(uname)
