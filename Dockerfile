@@ -12,11 +12,10 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 80F70E11F0F0D5F
  && mv /etc/squid3/squid.conf /etc/squid3/squid.conf.dist \
  && rm -rf /var/lib/apt/lists/*
 
-RUN     apt-get update && apt-get install -y apt-cacher-ng supervisor
+RUN apt-get update && apt-get install -y apt-cacher-ng supervisor
 RUN apt-get install -y python python-pip
-RUN pip install -q -U devpi-server
-
-
+RUN pip install -U pip
+RUN pip install -U devpi-server
 
 
 COPY squid.conf /etc/squid3/squid.conf
